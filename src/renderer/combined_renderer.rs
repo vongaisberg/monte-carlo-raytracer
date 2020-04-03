@@ -51,9 +51,9 @@ impl<'a> Renderer<'a> for CombinedRenderer<'a> {
 
         for pixel_x in 0..img.width {
             for pixel_y in 0..img.height {
-                if pixel_y == 0 {
-                    println!("Pixel: {} {}", pixel_x, pixel_y);
-                }
+                // if pixel_y == 0 {
+                //    println!("Pixel: {} {}", pixel_x, pixel_y);
+                // }
                 let mut pixel = RawPixel::new(pixel_x, pixel_y);
 
                 for i in 0..raster_size {

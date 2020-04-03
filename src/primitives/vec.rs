@@ -15,7 +15,25 @@ impl Vector {
     }
     pub fn random_on_unit_sphere() -> Vector {
         let mut rng = thread_rng();
-        Self::new(rng.gen(), rng.gen(), rng.gen()).normalize()
+        Self::new(
+            (rng.gen::<f64>() * 2f64) - 1f64,
+            (rng.gen::<f64>() * 2f64) - 1f64,
+            (rng.gen::<f64>() * 2f64) - 1f64,
+        )
+        .normalize()
+    }
+    pub fn random_in_unit_sphere() -> Vector {
+        let mut rng = thread_rng();
+        let vec = Self::new(
+            (rng.gen::<f64>() * 2f64) - 1f64,
+            (rng.gen::<f64>() * 2f64) - 1f64,
+            (rng.gen::<f64>() * 2f64) - 1f64,
+        );
+        if vec.length() >= 1f64 {
+            vec
+        } else {
+            Self::random_in_unit_sphere()
+        }
     }
 
     pub fn x(&self) -> f64 {
