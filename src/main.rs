@@ -1,24 +1,24 @@
 extern crate raytracer;
 
-use rand::{thread_rng, Rng};
+use rand::{thread_rng};
 use raytracer::cameras::pinhole::Pinhole;
-use raytracer::cameras::thin_lense::ThinLenseCamera;
-use raytracer::cameras::Camera;
+
+
 use raytracer::io::export;
 use raytracer::materials::phong::PseudoPhong;
-use raytracer::materials::phong_with_refraction::PseudoPhongRefraction;
+
 use raytracer::objects::{scene::Scene, sphere::Sphere};
 use raytracer::primitives::vec::{Color, Vector};
 use raytracer::renderer::combined_renderer::CombinedRenderer;
-use raytracer::renderer::fixed_samples::FixedSamplesRenderer;
+
 use raytracer::renderer::raw::RawImage;
-use raytracer::renderer::std_div_renderer::StdDivRenderer;
+
 use raytracer::renderer::Renderer;
 
 use rayon::prelude::*;
 
 fn main() {
-    (0..1).into_par_iter().for_each(|focus_factor| {
+    (0..1).into_par_iter().for_each(|_focus_factor| {
         let camera = Pinhole::new(
             Vector::new(0f64, 2.5f64, 0f64),
             Vector::new(5f64, 5f64, 0f64),
@@ -118,7 +118,7 @@ fn main() {
         scene.add_object(Box::new(ground));
         scene.add_object(Box::new(matte));
 
-        let mut rng = thread_rng();
+        let _rng = thread_rng();
         /*
         for a in 0..10 {
             for b in 1..10 {

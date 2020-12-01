@@ -1,13 +1,13 @@
 use super::{
-    raw::{RawDot, RawImage, RawPixel},
+    raw::{RawDot, RawImage},
     Renderer,
 };
 use crate::cameras::Camera;
 use crate::objects::scene::Scene;
-use crate::primitives::ray::Ray;
+
 use crate::primitives::vec::Color;
 use rand::{thread_rng, Rng};
-use rayon::prelude::*;
+
 
 pub struct StdDivRenderer<'a> {
     scene: &'a Scene<'a>,

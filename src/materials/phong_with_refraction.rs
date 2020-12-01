@@ -2,11 +2,11 @@ use crate::materials::Material;
 use crate::primitives::intersection::Intersection;
 use crate::primitives::ray::Ray;
 use crate::primitives::vec::{Color, Vector};
-use std::marker::Sync;
+
 
 #[cfg(test)]
 use crate::objects::sphere::Sphere;
-use crate::objects::Object;
+
 
 use num::clamp;
 use rand::Rng;
@@ -151,7 +151,7 @@ fn test_scatter() {
         1f64,
         Vector::new(1f64, 0f64, 0f64),
     );
-
+/*
     println!(
         "TEST: {:?}",
         sphere.material().scatter(
@@ -162,4 +162,5 @@ fn test_scatter() {
             &intersection
         )
     );
+    */
 }

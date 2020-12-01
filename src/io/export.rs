@@ -1,5 +1,5 @@
 extern crate image;
-use crate::renderer::raw::{RawImage, RawPixel};
+use crate::renderer::raw::{RawImage};
 
 use std::path::Path;
 

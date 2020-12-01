@@ -32,7 +32,7 @@ impl ThinLenseCamera {
 }
 impl Camera for ThinLenseCamera {
     fn get_ray(&self, x: f64, y: f64) -> Ray {
-        let mut blur_offset = Vector::random_in_unit_sphere() * self.aperture;
+        let blur_offset = Vector::random_in_unit_sphere() * self.aperture;
 
         let viewplane_point =
             self.viewplane_top_left + (self.viewplane_down * y) + (self.viewplane_right * x);

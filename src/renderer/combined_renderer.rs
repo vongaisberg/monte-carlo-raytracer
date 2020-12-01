@@ -4,13 +4,13 @@ use super::{
 };
 use crate::cameras::Camera;
 use crate::objects::scene::Scene;
-use crate::primitives::ray::Ray;
+
 use crate::primitives::vec::Color;
 use atomic_counter::{AtomicCounter, RelaxedCounter};
-use crossbeam;
+
 use rand::{thread_rng, Rng};
 use rayon::prelude::*;
-use threadpool::ThreadPool;
+
 
 pub struct CombinedRenderer<'a> {
     scene: &'a Scene<'a>,

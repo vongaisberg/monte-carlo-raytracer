@@ -1,12 +1,12 @@
 use super::{
-    raw::{RawDot, RawImage, RawPixel},
+    raw::{RawDot, RawImage},
     Renderer,
 };
 use crate::cameras::Camera;
 use crate::objects::scene::Scene;
-use crate::primitives::ray::Ray;
+
 use rand::{thread_rng, Rng};
-use rayon::prelude::*;
+
 
 pub struct FixedSamplesRenderer<'a> {
     scene: &'a Scene<'a>,

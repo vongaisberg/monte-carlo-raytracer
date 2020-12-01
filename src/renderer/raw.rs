@@ -1,9 +1,9 @@
 use crate::primitives::vec::Color;
-use rayon::iter::IntoParallelRefIterator;
+
 use rayon::prelude::*;
-use std::iter::{Flatten, Iterator};
+use std::iter::{Iterator};
 use std::ops::Add;
-use std::sync::{Arc, Mutex};
+use std::sync::{Mutex};
 
 ///A dot with a floating point location on a raw image
 #[derive(Debug, Copy, Clone)]

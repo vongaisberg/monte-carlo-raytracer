@@ -7,7 +7,7 @@ use crate::objects::Object;
 use crate::materials::Material;
 use crate::cameras::Camera;
 
-use std::sync::Mutex;
+
 
 const EPSILON: f64 = f64::MIN_POSITIVE *10000f64;
 

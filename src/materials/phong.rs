@@ -5,7 +5,7 @@ use crate::primitives::vec::{Color, Vector};
 
 #[cfg(test)]
 use crate::objects::sphere::Sphere;
-use crate::objects::Object;
+
 
 use rand::Rng;
 
@@ -64,6 +64,6 @@ fn test_scatter() {
 
     let intersection = Intersection::new(Vector::new(1f64, 0f64, 0f64),  &sphere, 1f64, Vector::new(1f64, 0f64, 0f64));
 
-    println!("TEST: {:?}", sphere.material().scatter(&Ray::new(Vector::new(3f64, 0f64, 0f64), Vector::new(-1f64, 0f64, 0f64)), &intersection));
+  //  println!("TEST: {:?}", sphere.material().scatter(&Ray::new(Vector::new(3f64, 0f64, 0f64), Vector::new(-1f64, 0f64, 0f64)), &intersection));
 
 }
