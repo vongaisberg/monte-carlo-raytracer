@@ -13,7 +13,7 @@ pub fn gen_ppm(img: &mut RawImage, filename: String) -> () {
 
     for x in 0..sizex {
         for y in 0..sizey {
-            let color = img.pixel(x, y).color();
+            let color = img.pixel(x, y).lock().unwrap().color();
             imgbuf.put_pixel(
                 x as u32,
                 y as u32,

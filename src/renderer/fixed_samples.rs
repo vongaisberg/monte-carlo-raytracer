@@ -9,7 +9,7 @@ use rand::{thread_rng, Rng};
 use rayon::prelude::*;
 
 pub struct FixedSamplesRenderer<'a> {
-    scene: &'a Scene,
+    scene: &'a Scene<'a>,
     samples_per_pixel: usize,
 }
 
@@ -51,7 +51,7 @@ impl<'a> Renderer<'a> for FixedSamplesRenderer<'a> {
 
                         let ray = self.scene.camera.get_ray(x, y);
 
-                        img.pixel(pixel_x, pixel_y).add_dot(RawDot::new(
+                        img.pixel(pixel_x, pixel_y).lock().unwrap().add_dot(RawDot::new(
                             x,
                             y,
                             self.scene.trace_ray(&ray, max_depth),

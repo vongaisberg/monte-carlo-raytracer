@@ -44,3 +44,4 @@ impl Camera for ThinLenseCamera {
         )
     }
 }
+unsafe impl Sync for ThinLenseCamera {}

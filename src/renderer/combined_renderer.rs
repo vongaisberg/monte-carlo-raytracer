@@ -6,12 +6,14 @@ use crate::cameras::Camera;
 use crate::objects::scene::Scene;
 use crate::primitives::ray::Ray;
 use crate::primitives::vec::Color;
+use atomic_counter::{AtomicCounter, RelaxedCounter};
+use crossbeam;
 use rand::{thread_rng, Rng};
 use rayon::prelude::*;
 use threadpool::ThreadPool;
 
 pub struct CombinedRenderer<'a> {
-    scene: &'a Scene,
+    scene: &'a Scene<'a>,
     first_stage_samples_per_pixel: usize,
     second_stage_samples_per_pixel: usize,
     min_std_div: Color,
@@ -44,16 +46,17 @@ impl<'a> Renderer<'a> for CombinedRenderer<'a> {
         let max_depth = 50;
         let raster_size = (self.first_stage_samples_per_pixel as f64).sqrt() as usize;
         let raster_width: f64 = 1f64 / (raster_size as f64);
-        let mut rng = thread_rng();
 
-        let mut changed_pixels = 0;
-        let mut unchanged_pixels = 0;
+        let progress = RelaxedCounter::new(0);
 
-        for pixel_x in 0..img.width {
+        (0..img.width).into_par_iter().for_each(|pixel_x| {
+            println!(
+                "Line: {} {:.2}%",
+                pixel_x,
+                (progress.inc() as f64) / img.width as f64 * 100f64
+            );
+            let mut rng = thread_rng();
             for pixel_y in 0..img.height {
-                // if pixel_y == 0 {
-                //    println!("Pixel: {} {}", pixel_x, pixel_y);
-                // }
                 let mut pixel = RawPixel::new(pixel_x, pixel_y);
 
                 for i in 0..raster_size {
@@ -75,7 +78,7 @@ impl<'a> Renderer<'a> for CombinedRenderer<'a> {
                 }
 
                 if !(pixel.color() == self.min_std_div) {
-                    changed_pixels += 1;
+                    //changed_pixels += 1;
                     let raster_size = (self.second_stage_samples_per_pixel as f64).sqrt() as usize;
                     let raster_width: f64 = 1f64 / (raster_size as f64);
 
@@ -97,20 +100,14 @@ impl<'a> Renderer<'a> for CombinedRenderer<'a> {
                         }
                     }
                 } else {
-                    unchanged_pixels += 1;
+                    //unchanged_pixels += 1;
                 }
                 let color = pixel.color();
-                img.pixel(pixel_x, pixel_y).add_dot(RawDot::new(
-                    pixel_x as f64,
-                    pixel_y as f64,
-                    color,
-                ));
+                img.pixel(pixel_x, pixel_y)
+                    .lock()
+                    .unwrap()
+                    .add_dot(RawDot::new(pixel_x as f64, pixel_y as f64, color));
             }
-        }
-
-        println!(
-            "unchanged pixels: {}, changed pixels: {}",
-            unchanged_pixels, changed_pixels
-        );
+        });
     }
 }

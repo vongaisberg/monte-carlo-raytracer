@@ -90,3 +90,5 @@ impl Intersect for Sphere {
         }
     }
 }
+
+unsafe impl Sync for Sphere {}

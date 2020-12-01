@@ -7,16 +7,20 @@ use crate::objects::Object;
 use crate::materials::Material;
 use crate::cameras::Camera;
 
-pub struct Scene {
-    objects: Vec<Box<dyn Object>>,
-    pub camera: Box<Camera>,
-    sky_color: Color,
+use std::sync::Mutex;
+
+const EPSILON: f64 = f64::MIN_POSITIVE *10000f64;
+
+pub struct Scene<'a> {
+    objects: Vec<Box<dyn Object + Sync>>,
+    pub camera: &'a (dyn Camera + Sync),
+    pub sky_color: Color,
     ray_shooting_offset: f64,
 }
 
-impl Scene {
+impl<'a> Scene<'a> {
 
-    pub fn new(camera: Box<Camera>, sky_color: Color, ray_shooting_offset: f64) -> Scene {
+    pub fn new(camera: &'a (dyn Camera + Sync), sky_color: Color, ray_shooting_offset: f64) -> Scene<'a> {
         Scene{
             objects: Vec::new(),
             camera: camera,
@@ -25,7 +29,7 @@ impl Scene {
         }
     }
 
-    pub fn add_object(&mut self, obj: Box<dyn Object>) {
+    pub fn add_object(&mut self, obj: Box<dyn Object + Sync>) {
         self.objects.push(obj);
     }
 
@@ -37,6 +41,7 @@ impl Scene {
             if let Some(intersection) = self.shoot_ray(ray) {
                 let (recursive_ray, reflective_color, additive_color) =
                     intersection.object.material().scatter(ray, &intersection);
+                let recursive_ray = Ray::new(recursive_ray.origin + recursive_ray.direction* EPSILON, recursive_ray.direction);
                 let color = additive_color + (reflective_color * self.trace_ray(&recursive_ray, max_depth - 1));
                 //println!("Depth: {}, Color: {:?}", max_depth, color);
                 color

@@ -72,6 +72,19 @@ impl Vector {
     pub fn reflect(self, normalized_other: &Self) -> Self {
         self - *normalized_other * (self.dot(normalized_other) * 2f64)
     }
+
+    pub fn refract(self, normalized_other: &Self, refraction_fraction: f64) -> Option<Self> {
+        let dt = self.dot(&normalized_other);
+        let discriminant = 1f64 - refraction_fraction * refraction_fraction * (1f64 - dt * dt);
+        if discriminant > 0f64 {
+            Some(
+                (self - *normalized_other * dt) * refraction_fraction
+                    - *normalized_other * ((discriminant).sqrt()),
+            )
+        } else {
+            None
+        }
+    }
 }
 
 impl Add for Vector {

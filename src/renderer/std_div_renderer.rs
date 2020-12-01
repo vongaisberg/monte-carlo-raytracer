@@ -10,7 +10,7 @@ use rand::{thread_rng, Rng};
 use rayon::prelude::*;
 
 pub struct StdDivRenderer<'a> {
-    scene: &'a Scene,
+    scene: &'a Scene<'a>,
     samples_per_pixel: usize,
     min_std_div: Color,
 }
@@ -45,7 +45,7 @@ impl<'a> Renderer<'a> for StdDivRenderer<'a> {
                 if pixel_y == 0 {
                     println!("StdDivPixel: {} {}", pixel_x, pixel_y);
                 }
-                if !img.pixel(pixel_x, pixel_y).std_div().less_than(self.min_std_div) {
+                if !img.pixel(pixel_x, pixel_y).lock().unwrap().std_div().less_than(self.min_std_div) {
                     changed_pixels += 1;
 
                     for i in 0..raster_size {
@@ -64,7 +64,7 @@ impl<'a> Renderer<'a> for StdDivRenderer<'a> {
 
                             let ray = self.scene.camera.get_ray(x, y);
 
-                            img.pixel(pixel_x, pixel_y).add_dot(RawDot::new(
+                            img.pixel(pixel_x, pixel_y).lock().unwrap().add_dot(RawDot::new(
                                 x,
                                 y,
                                 self.scene.trace_ray(&ray, max_depth),
@@ -74,7 +74,7 @@ impl<'a> Renderer<'a> for StdDivRenderer<'a> {
                 } else {
                     unchanged_pixels += 1;
                 }
-                 img.pixel(pixel_x, pixel_y).finalize();
+                 img.pixel(pixel_x, pixel_y).lock().unwrap().finalize();
             }
         }
         println!(

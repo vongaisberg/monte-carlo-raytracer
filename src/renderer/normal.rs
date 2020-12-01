@@ -65,11 +65,11 @@ impl RawPixel {
 }
 
 //A representation of an image consisting of raw pixels
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct RawImage {
     pub width: usize,
     pub height: usize,
-    pixels: Vec<Vec<Mutex<RawPixel>>>,
+    pixels: Vec<Vec<RawPixel>>,
 }
 
 impl RawImage {
@@ -80,7 +80,7 @@ impl RawImage {
             vec.push(Vec::with_capacity(height));
 
             for j in 0..height {
-                vec[i].push(Mutex::new(RawPixel::new(i, j)));
+                vec[i].push(RawPixel::new(i, j));
             }
         }
         Self {
@@ -90,13 +90,11 @@ impl RawImage {
         }
     }
 
-    pub fn pixel(&self, x: usize, y: usize) -> & Mutex<RawPixel> {
-        &self.pixels[x][y]
+    pub fn pixel(&mut self, x: usize, y: usize) -> &mut RawPixel {
+        &mut self.pixels[x][y]
     }
 
-    /*
     pub fn par_iter(&self) -> std::iter::Flatten<std::slice::Iter<'_, std::vec::Vec<RawPixel>>> {
         self.pixels.iter().flatten()
     }
-    */
 }

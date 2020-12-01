@@ -1,4 +1,5 @@
 pub mod phong;
+pub mod phong_with_refraction;
 
 use crate::primitives::intersection::Intersection;
 use crate::primitives::ray::Ray;
