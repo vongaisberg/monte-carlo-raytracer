@@ -62,7 +62,7 @@ fn test_scatter() {
 
     let sphere = Sphere::new(Vector::new(0f64, 0f64, 0f64), 1f64, Box::new(phong));
 
-    let intersection = Intersection::new(Vector::new(1f64, 0f64, 0f64),  &sphere, 1f64, Vector::new(1f64, 0f64, 0f64));
+    let _intersection = Intersection::new(Vector::new(1f64, 0f64, 0f64),  &sphere, 1f64, Vector::new(1f64, 0f64, 0f64));
 
   //  println!("TEST: {:?}", sphere.material().scatter(&Ray::new(Vector::new(3f64, 0f64, 0f64), Vector::new(-1f64, 0f64, 0f64)), &intersection));
 

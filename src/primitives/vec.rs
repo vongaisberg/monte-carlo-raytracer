@@ -1,5 +1,6 @@
 use rand::{thread_rng, Rng};
 use std::cmp::PartialEq;
+use std::f64::consts::PI;
 use std::ops::{Add, Div, Mul, Neg, Sub};
 
 // Yay const generics!
